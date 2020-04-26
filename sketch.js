@@ -33,8 +33,7 @@ var fuzzPhrase = new p5.Phrase('fuzzPhrase', triggerFuzz, fuzzPattern);
 var bleepPhrase = new p5.Phrase('bleepPhrase', triggerBleep, bleepPattern);
 
 //This creates a p5 "Part" object that controls the beat's BPM and looping
-var mainBeat = new p5.Part(16);
-mainBeat.setBPM(bpm);
+var mainBeat;
 
 //Trigger pad coordinates
 var x = 150;
@@ -58,6 +57,7 @@ function StartStop() {
 		if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height){
 			if (this.onOff == false){
 				this.onOff = true;
+				userStartAudio(); // Function needed to pass Chrome's autoplay criteria.
 				mainBeat.loop();
 			} else {
 				this.onOff = false;
@@ -704,6 +704,8 @@ function preload() {
 function setup() {
 	createCanvas(1000, 600);
 	background(255);
+	mainBeat = new p5.Part(16);
+	mainBeat.setBPM(bpm);
 
 	//Fonts
 	robMonoMed = loadFont("fonts/RobotoMono-Regular.ttf");
@@ -748,7 +750,7 @@ function draw(){
 	//BPM
 	fill(0);
 	textFont(robMonoBold);
-textSize(48);
+	textSize(48);
 	text("BPM: " + bpm, 140, 60);
 
 	//BPM Controls
@@ -818,6 +820,7 @@ function keyPressed() {
 	if (keyCode == 32) {
 		if (playPause.onOff == false){
 				playPause.onOff = true;
+				userStartAudio(); // Function needed to pass Chrome's autoplay criteria.
 				mainBeat.loop();
 			} else {
 				playPause.onOff = false;
